@@ -2,8 +2,6 @@ package com.example52.Lab_Movie.controllers;
 
 
 import com.example52.Lab_Movie.models.Movie;
-import com.example52.Lab_Movie.models.Reply;
-import com.example52.Lab_Movie.repositories.IMovieRepository;
 import com.example52.Lab_Movie.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,13 +19,13 @@ public class MovieController {
     MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies(){
+    public ResponseEntity<List<Movie>> getAllMovies() {
         List<Movie> movies = movieService.getAllMovies();
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable int id){
+    public ResponseEntity<Movie> getMovieById(@PathVariable int id) {
         Optional<Movie> movie = movieService.getMovieById(id);
         if (movie.isPresent()) {
             return new ResponseEntity<>(movie.get(), HttpStatus.OK);
@@ -45,10 +43,20 @@ public class MovieController {
 
     //processing movies
     @PostMapping
-    public ResponseEntity<String> addMovie( @PathVariable int id,
+    public ResponseEntity<String> addMovie(
             @RequestParam(value = "title") String title,
             @RequestParam(value = "rating") int rating,
-            @RequestParam(value = "duration") int duration){
+            @RequestParam(value = "duration") int duration) {
+        movieService.addMovie(title, rating, duration);
+        return new ResponseEntity<>(title + " movie", HttpStatus.CREATED);
+    }
+
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<String> updateMovieById(@PathVariable int id,
+                                                  @RequestParam(value = "title") String title,
+                                                  @RequestParam(value = "rating") int rating,
+                                                  @RequestParam(value = "duration") int duration){
         if (movieService.getMovieById(id).isPresent()){
             movieService.updateMovieById(id, title, rating, duration);
             return new ResponseEntity<>("movie updated", HttpStatus.OK);
@@ -56,5 +64,8 @@ public class MovieController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+
+
 
 }
