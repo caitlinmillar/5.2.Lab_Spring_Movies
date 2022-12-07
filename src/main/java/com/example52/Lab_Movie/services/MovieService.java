@@ -14,6 +14,7 @@ public class MovieService {
     @Autowired
     IMovieRepository iMovieRepository;
 
+    private String currentMovie;
     //empty constructor
     public MovieService(){}
 
@@ -37,6 +38,13 @@ public class MovieService {
         iMovieRepository.deleteById(id);
     }
 
+    public String getCurrentMovie() {
+        return currentMovie;
+    }
+
+    public void setCurrentMovie(String currentMovie) {
+        this.currentMovie = currentMovie;
+    }
 
 
 

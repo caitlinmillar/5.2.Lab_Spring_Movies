@@ -30,7 +30,5 @@ public class MovieList {
         return this.movies.get(id -1);
     }
 
- //   public void addMovie(Movie movie){this.movies.add(movie);}
-
 
 }
