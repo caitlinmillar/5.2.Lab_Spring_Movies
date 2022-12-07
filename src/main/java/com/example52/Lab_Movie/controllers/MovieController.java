@@ -3,6 +3,7 @@ package com.example52.Lab_Movie.controllers;
 
 import com.example52.Lab_Movie.models.Movie;
 import com.example52.Lab_Movie.models.Reply;
+import com.example52.Lab_Movie.repositories.IMovieRepository;
 import com.example52.Lab_Movie.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class MovieController {
     @Autowired
     MovieService movieService;
 
-    @GetMapping(value = "/movies")
+    @GetMapping
     public ResponseEntity<List<Movie>> getAllMovies(){
         List<Movie> movies = movieService.getAllMovies();
         return new ResponseEntity<>(movies, HttpStatus.OK);
@@ -35,10 +36,13 @@ public class MovieController {
         }
     }
 
+    //processing movies
     @PostMapping
-    public ResponseEntity<Reply> startMovie(){
+    public ResponseEntity<String> processMovie(
+            @RequestParam(value = "title") String title){
+        movieService.processMovie(title);
         Reply reply = movieService.startMovie();
-        return new ResponseEntity<>(reply, HttpStatus.CREATED);
+
     }
 
 }
