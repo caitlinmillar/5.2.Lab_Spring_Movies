@@ -36,13 +36,25 @@ public class MovieController {
         }
     }
 
+    // Difficulty with IMPLEMENTING MAX DURATION
+//    @GetMapping(value = "/showLongestDuration")
+//    public ResponseEntity<List<Movie>> getAllMovies(@RequestParam int maxDuration){
+//        List<Movie> movies = movieService.getAllMovies(maxDuration);
+//        return new ResponseEntity<>(movies, HttpStatus.OK);
+//    }
+
     //processing movies
     @PostMapping
-    public ResponseEntity<String> processMovie(
-            @RequestParam(value = "title") String title){
-        movieService.processMovie(title);
-        Reply reply = movieService.startMovie();
-
+    public ResponseEntity<String> addMovie( @PathVariable int id,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "rating") int rating,
+            @RequestParam(value = "duration") int duration){
+        if (movieService.getMovieById(id).isPresent()){
+            movieService.updateMovieById(id, title, rating, duration);
+            return new ResponseEntity<>("movie updated", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
 }

@@ -20,51 +20,36 @@ public class MovieService {
     @Autowired
     IMovieRepository iMovieRepository;
 
-    @Autowired
-    MovieService movieService;
-
-    private String currentMovie;
-    private ArrayList<Integer> allRatings;
-    private ArrayList<String> allMovies;
-
     //empty constructor
     public MovieService(){}
 
-    public String getCurrentMovie() {
-        return currentMovie;
+    public void addMovie(String title, int rating, int duration) {
+        Movie movie = new Movie(title, rating, duration);
+        iMovieRepository.save(movie);
     }
 
-    public void setCurrentMovie(String currentMovie) {
-        this.currentMovie = currentMovie;
-    }
+    public void updateMovieById(int id, String title, int rating, int duration){
 
-    public ArrayList<Integer> getAllRatings() {
-        return allRatings;
-    }
-
-    public void setAllRatings(ArrayList<Integer> allRatings) {
-        this.allRatings = allRatings;
-    }
-
-
-    public Reply processMovie(int id){
         Movie movie = iMovieRepository.findById(id).get();
 
-        return new Reply("Back to the future");
-    }
+        movie.setTitle(title);
+        movie.setRating(rating);
+        movie.setDuration(duration);
 
-
-
-    public Reply startMovie(){
-        String currentMovie = movieService.getCurrentMovie();
-        Movie movie = new Movie(currentMovie);
         iMovieRepository.save(movie);
-        return new Reply(
-                String.format("New movies with id %d", movie.getId())
-        );
     }
 
-    public List<Movie> getAllMovies(){return iMovieRepository.findAll();}
-    public Optional<Movie> getMovieById(int id){return iMovieRepository.findById(id);}
+    public void deleteMovieById(int id){
+        iMovieRepository.deleteById(id);
+    }
+
+
+
+
+    public List<Movie> getAllMovies(){
+        return iMovieRepository.findAll();}
+
+    public Optional<Movie> getMovieById(int id){
+        return iMovieRepository.findById(id);}
 
 }

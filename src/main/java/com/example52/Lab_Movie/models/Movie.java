@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Entity(name = "movies")
 public class Movie {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -19,7 +20,7 @@ public class Movie {
     @Column(name = "duration")
     private int duration;
 
-    public Movie(String title){
+    public Movie(String title, int rating, int duration){
         this.title = title;
         this.duration = 0;
         this.rating = 0;
